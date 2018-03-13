@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>Celloc.DataTable</id>
+		<version>1.0.0</version>
+		<title>Celloc.DataTable</title>
+		<authors>Sydney du Plooy</authors>
+		<licenseUrl>https://github.com/sduplooy/Celloc.DataTable/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/sduplooy/Celloc.DataTable</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>A DataTable extension for Celloc.</description>
+		<releaseNotes>Adds extension methods to System.Data.DataTable to get values from the table by cell or range.</releaseNotes>
+		<copyright>Copyright (c) 2018 Sydney du Plooy</copyright>
+		<tags>Celloc Excel DataTable</tags>
+		<dependencies>
+			<dependency id="System.ValueTuple" version="4.4.0" />
+			<dependency id="Celloc" version="2.2.0" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="Celloc.DataTable\bin\Release\Celloc.DataTable.dll" target="lib\net45" />
+	</files>
+</package>
