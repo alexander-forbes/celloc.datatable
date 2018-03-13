@@ -6,6 +6,8 @@ To install the package from NuGet, run the following command:
 `Install-Package Celloc.DataTable`
 
 ## Usage
+If cell or range does not exist in the DataTable a `null` will be returned.
+
 ### Contains
 To check whether the DataTable has a specific cell, use the `Contains` method:
 
