@@ -51,8 +51,10 @@ or
 var result = myDataTable.GetValuesByRow(((0,0),(1,1)));
 // result[0] == [A1, B1]
 // result[1] == [A2, B2]
-
 ```
+
+To get the entire table, by row, use `GetValuesByRow` method without any parameters.
+
 ### GetValuesByColumn
 Assume the following table:
 ```
@@ -72,3 +74,5 @@ var result = myDataTable.GetValuesByColumn(((0,0),(1,1)));
 // result[0] == [A1, A2]
 // result[1] == [B1, B2]
 ```
+
+To get the entire table, by column, use `GetValuesByRow` method without any parameters.
