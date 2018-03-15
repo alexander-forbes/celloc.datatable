@@ -67,6 +67,12 @@ namespace Celloc.DataTable
 			return GetValuesByRow(table, CellRange.Translate(range, Offset.ZeroBased));
 		}
 
+		public static List<List<object>> GetValuesByRow(this System.Data.DataTable table)
+		{
+			GuardAgainstNullTable(table);
+			return GetValuesByRow(table, ((0,0), (table.Columns.Count - 1, table.Rows.Count - 1)));
+		}
+
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table, ((int Column, int Row), (int Column, int Row)) range)
 		{
 			GuardAgainstNullTable(table);
@@ -95,6 +101,12 @@ namespace Celloc.DataTable
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table, string range)
 		{
 			return GetValuesByColumn(table, CellRange.Translate(range, Offset.ZeroBased));
+		}
+
+		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table)
+		{
+			GuardAgainstNullTable(table);
+			return GetValuesByColumn(table, ((0,0),(table.Columns.Count - 1, table.Rows.Count - 1)));
 		}
 
 		private static void GuardAgainstNullTable(System.Data.DataTable table)

@@ -2,14 +2,14 @@
 <package >
 	<metadata>
 		<id>Celloc.DataTable</id>
-		<version>1.0.0</version>
+		<version>1.1.0</version>
 		<title>Celloc.DataTable</title>
 		<authors>Sydney du Plooy</authors>
 		<licenseUrl>https://github.com/sduplooy/Celloc.DataTable/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/sduplooy/Celloc.DataTable</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>A DataTable extension for Celloc.</description>
-		<releaseNotes>Adds extension methods to System.Data.DataTable to get values from the table by cell or range.</releaseNotes>
+		<releaseNotes>Adds the ability to extract an entire table by row or column.</releaseNotes>
 		<copyright>Copyright (c) 2018 Sydney du Plooy</copyright>
 		<tags>Celloc Excel DataTable</tags>
 		<dependencies>

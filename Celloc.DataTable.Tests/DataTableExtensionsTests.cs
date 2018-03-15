@@ -284,6 +284,48 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
+	public class When_calling_get_values_by_row_on_datatable_extensions
+	{
+		private System.Data.DataTable _DataTable;
+
+		[SetUp]
+		public void Setup()
+		{
+			_DataTable = new System.Data.DataTable();
+			_DataTable.Columns.Add("Column-1");
+			_DataTable.Columns.Add("Column-2");
+			_DataTable.Columns.Add("Column-3");
+			_DataTable.Columns.Add("Column-4");
+		}
+
+		[Test]
+		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
+		{
+			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByRow(null));
+			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
+		}
+
+		[Test]
+		public void It_should_return_null_when_the_table_does_not_have_any_rows_or_columns()
+		{
+			_DataTable.Columns.Clear();
+			Assert.IsNull(_DataTable.GetValuesByRow());
+		}
+
+		[Test]
+		public void It_should_return_the_values_in_the_range()
+		{
+			_DataTable.Rows.Add("Value-1", "Value-2", "Value-3", "Value-4");
+			_DataTable.Rows.Add("Value-5", "Value-6", "Value-7", "Value-8");
+			
+			var values = _DataTable.GetValuesByRow();
+
+			CollectionAssert.AreEqual(new[] {"Value-1", "Value-2", "Value-3", "Value-4"}, values[0]);
+			CollectionAssert.AreEqual(new[] {"Value-5", "Value-6", "Value-7", "Value-8"}, values[1]);
+		}
+	}
+	
+	[TestFixture]
 	public class When_calling_get_values_by_column_on_datatable_extensions_with_a_cell_range_index
 	{
 		private System.Data.DataTable _DataTable;
@@ -396,6 +438,50 @@ namespace Celloc.DataTable.Tests
 
 			CollectionAssert.AreEqual(new[] {"Value-1", "Value-3"}, values[0]);
 			CollectionAssert.AreEqual(new[] {"Value-2", "Value-4"}, values[1]);
+		}
+	}
+
+	[TestFixture]
+	public class When_calling_get_values_by_column_on_datatable_extensions
+	{
+		private System.Data.DataTable _DataTable;
+
+		[SetUp]
+		public void Setup()
+		{
+			_DataTable = new System.Data.DataTable();
+			_DataTable.Columns.Add("Column-1");
+			_DataTable.Columns.Add("Column-2");
+			_DataTable.Columns.Add("Column-3");
+			_DataTable.Columns.Add("Column-4");
+		}
+
+		[Test]
+		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
+		{
+			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByColumn(null));
+			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
+		}
+
+		[Test]
+		public void It_should_return_null_when_the_table_does_not_have_any_rows_or_columns()
+		{
+			_DataTable.Columns.Clear();
+			Assert.IsNull(_DataTable.GetValuesByColumn());
+		}
+
+		[Test]
+		public void It_should_return_the_values_in_the_range()
+		{
+			_DataTable.Rows.Add("Value-1", "Value-2", "Value-3", "Value-4");
+			_DataTable.Rows.Add("Value-5", "Value-6", "Value-7", "Value-8");
+
+			var values = _DataTable.GetValuesByColumn();
+
+			CollectionAssert.AreEqual(new[] {"Value-1", "Value-5"}, values[0]);
+			CollectionAssert.AreEqual(new[] {"Value-2", "Value-6"}, values[1]);
+			CollectionAssert.AreEqual(new[] {"Value-3", "Value-7"}, values[2]);
+			CollectionAssert.AreEqual(new[] {"Value-4", "Value-8"}, values[3]);
 		}
 	}
 }
