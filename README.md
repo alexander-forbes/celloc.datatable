@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/sduplooy/Celloc.DataTable.svg?branch=master)](https://travis-ci.org/sduplooy/Celloc.DataTable)
+[![NuGet Badge](https://buildstats.info/nuget/Celloc.DataTable)](https://www.nuget.org/packages/Celloc.DataTable/)
+
 # Celloc.DataTable
 A DataTable extension for Celloc.
 
@@ -6,6 +9,8 @@ To install the package from NuGet, run the following command:
 `Install-Package Celloc.DataTable`
 
 ## Usage
+If a cell or range does not exist in the DataTable, a `null` will be returned.
+
 ### Contains
 To check whether the DataTable has a specific cell, use the `Contains` method:
 
