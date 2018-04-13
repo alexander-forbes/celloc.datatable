@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Celloc.DataTable
 {
@@ -100,7 +101,19 @@ namespace Celloc.DataTable
 
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table, string range)
 		{
+			GuardAgainstNullRange(range);
+
+			range = ReplaceUnknownWithLastRow(table, range);
+
 			return GetValuesByColumn(table, CellRange.Translate(range, Offset.ZeroBased));
+		}
+
+		private static string ReplaceUnknownWithLastRow(System.Data.DataTable table, string range)
+		{
+			if (Regex.IsMatch(range, @"^[a-zA-Z]{0,3}[0-9]+:[a-zA-Z]{0,3}\?$"))
+				range = range.Replace("?", table.Rows.Count.ToString());
+
+			return range;
 		}
 
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table)
@@ -119,6 +132,12 @@ namespace Celloc.DataTable
 		{
 			if (string.IsNullOrEmpty(cell))
 				throw new ArgumentNullException(nameof(cell));
+		}
+
+		private static void GuardAgainstNullRange(string range)
+		{
+			if (string.IsNullOrEmpty(range))
+				throw new ArgumentNullException(nameof(range));
 		}
 	}
 }

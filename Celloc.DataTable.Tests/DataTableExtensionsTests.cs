@@ -439,6 +439,20 @@ namespace Celloc.DataTable.Tests
 			CollectionAssert.AreEqual(new[] {"Value-1", "Value-3"}, values[0]);
 			CollectionAssert.AreEqual(new[] {"Value-2", "Value-4"}, values[1]);
 		}
+
+		
+		[Test]
+		public void It_should_return_the_values_starting_from_the_specified_row()
+		{
+			_DataTable.Rows.Add("Value-1", "Value-2");
+			_DataTable.Rows.Add("Value-3", "Value-4");
+			_DataTable.Rows.Add("Value-5", "Value-6");
+			_DataTable.Rows.Add("Value-7", "Value-8");
+
+			var values = _DataTable.GetValuesByColumn("B2:B?");
+
+			CollectionAssert.AreEqual(new[] {"Value-4", "Value-6", "Value-8"}, values[0]);
+		}
 	}
 
 	[TestFixture]
