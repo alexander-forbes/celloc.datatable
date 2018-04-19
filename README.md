@@ -72,3 +72,8 @@ var result = myDataTable.GetValuesByColumn(((0,0),(1,1)));
 // result[0] == [A1, A2]
 // result[1] == [B1, B2]
 ```
+### TranslateCell
+
+### TranslateRange
+
+

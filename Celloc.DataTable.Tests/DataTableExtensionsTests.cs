@@ -185,6 +185,8 @@ namespace Celloc.DataTable.Tests
 			_DataTable = new System.Data.DataTable();
 			_DataTable.Columns.Add("Column-1");
 			_DataTable.Columns.Add("Column-2");
+			_DataTable.Columns.Add("Column-3");
+			_DataTable.Columns.Add("Column-4");
 		}
 
 		[Test]
@@ -217,13 +219,44 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_return_the_values_in_the_range()
 		{
-			_DataTable.Rows.Add("Value-1", "Value-2");
-			_DataTable.Rows.Add("Value-3", "Value-4");
+			_DataTable.Rows.Add("Value-1", "Value-2", "Value-3", "Value-4");
+			_DataTable.Rows.Add("Value-5", "Value-6", "Value-7", "Value-8");
 
 			var values = _DataTable.GetValuesByRow("A1:B2");
 
 			CollectionAssert.AreEqual(new[] {"Value-1", "Value-2"}, values[0]);
-			CollectionAssert.AreEqual(new[] {"Value-3", "Value-4"}, values[1]);
+			CollectionAssert.AreEqual(new[] {"Value-5", "Value-6"}, values[1]);
+		}
+
+		[Test]
+		public void It_should_return_the_values_starting_from_the_specified_row()
+		{
+			_DataTable.Rows.Add("Value-1", "Value-2", "Value-3", "Value-4");
+			_DataTable.Rows.Add("Value-5", "Value-6", "Value-7", "Value-8");
+
+			var values = _DataTable.GetValuesByRow("B2:?2");
+
+			CollectionAssert.AreEqual(new[] {"Value-6", "Value-7", "Value-8"}, values[0]);
+		}
+
+		[Test]
+		public void It_should_replace_the_unknowns_with_the_last_column_and_row_indices()
+		{
+			_DataTable.Rows.Add("Value-1", "Value-2", "Value-3", "Value-4");
+			_DataTable.Rows.Add("Value-5", "Value-6", "Value-7", "Value-8");
+			_DataTable.Rows.Add("Value-9", "Value-10", "Value-11", "Value-12");
+
+			var values = _DataTable.GetValuesByRow("B2:??");
+
+			CollectionAssert.AreEqual(new[] {"Value-6", "Value-7", "Value-8"}, values[0]);
+			CollectionAssert.AreEqual(new[] {"Value-10", "Value-11", "Value-12"}, values[1]);
+		}
+
+		[Test]
+		public void It_should_return_null_when_the_table_does_not_have_any_rows_or_columns()
+		{
+			_DataTable.Columns.Clear();
+			Assert.IsNull(_DataTable.GetValuesByRow("A3:A?"));
 		}
 	}
 
@@ -404,14 +437,14 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_range_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByColumn(_DataTable, null));
+			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.GetValuesByColumn(null));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message);
 		}
 
 		[Test]
 		public void It_should_throw_an_exception_when_the_range_parameter_is_empty()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByColumn(_DataTable, string.Empty));
+			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.GetValuesByColumn(string.Empty));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message);
 		}
 
@@ -439,7 +472,6 @@ namespace Celloc.DataTable.Tests
 			CollectionAssert.AreEqual(new[] {"Value-1", "Value-3"}, values[0]);
 			CollectionAssert.AreEqual(new[] {"Value-2", "Value-4"}, values[1]);
 		}
-
 		
 		[Test]
 		public void It_should_return_the_values_starting_from_the_specified_row()
@@ -452,6 +484,13 @@ namespace Celloc.DataTable.Tests
 			var values = _DataTable.GetValuesByColumn("B2:B?");
 
 			CollectionAssert.AreEqual(new[] {"Value-4", "Value-6", "Value-8"}, values[0]);
+		}
+
+		[Test]
+		public void It_should_return_null_when_the_table_does_not_have_any_rows_or_columns()
+		{
+			_DataTable.Columns.Clear();
+			Assert.IsNull(_DataTable.GetValuesByColumn("A3:A?"));
 		}
 	}
 
@@ -496,6 +535,100 @@ namespace Celloc.DataTable.Tests
 			CollectionAssert.AreEqual(new[] {"Value-2", "Value-6"}, values[1]);
 			CollectionAssert.AreEqual(new[] {"Value-3", "Value-7"}, values[2]);
 			CollectionAssert.AreEqual(new[] {"Value-4", "Value-8"}, values[3]);
+		}
+	}
+
+	[TestFixture]
+	public class When_calling_translate_range_on_datatable_extensions
+	{
+		private System.Data.DataTable _DataTable;
+
+		[SetUp]
+		public void Setup()
+		{
+			_DataTable = new System.Data.DataTable();
+			_DataTable.Columns.Add("Column-1");
+			_DataTable.Columns.Add("Column-2");
+		}
+
+		[Test]
+		public void It_should_throw_an_exception_for_a_null_range()
+		{
+			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateRange(null));
+			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message, exception.Message);
+		}
+
+		[Test]
+		public void It_should_throw_an_exception_for_an_empty_range()
+		{
+			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateRange(string.Empty));
+			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message, exception.Message);
+		}
+
+		[Test]
+		public void It_should_replace_the_unknown_row_with_the_last_row_index()
+		{
+			_DataTable.Rows.Add("Value-1", "Value-2");
+			_DataTable.Rows.Add("Value-3", "Value-4");
+			_DataTable.Rows.Add("Value-5", "Value-6");
+			_DataTable.Rows.Add("Value-7", "Value-8");
+
+			var tuple = _DataTable.TranslateRange("B2:B?");
+
+			Assert.AreEqual(((1, 1),(1, 3)), tuple);
+		}
+
+		[Test]
+		public void It_should_return_null_when_the_table_does_not_have_any_rows_or_columns()
+		{
+			_DataTable.Columns.Clear();
+			Assert.IsNull(_DataTable.TranslateRange("A2:A?"));
+		}
+	}
+
+	[TestFixture]
+	public class When_calling_translate_cell_on_datatable_extensions
+	{
+		private System.Data.DataTable _DataTable;
+
+		[SetUp]
+		public void Setup()
+		{
+			_DataTable = new System.Data.DataTable();
+			_DataTable.Columns.Add("Column-1");
+			_DataTable.Columns.Add("Column-2");
+		}
+
+		[Test]
+		public void It_should_throw_an_exception_for_a_null_cell()
+		{
+			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateCell(null));
+			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: cell", exception.Message, exception.Message);
+		}
+
+		[Test]
+		public void It_should_throw_an_exception_for_an_empty_cell()
+		{
+			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateCell(string.Empty));
+			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: cell", exception.Message, exception.Message);
+		}
+
+		[Test]
+		public void It_should_replace_the_unknown_row_with_the_last_row_index()
+		{
+			_DataTable.Rows.Add("Value-1", "Value-2");
+			_DataTable.Rows.Add("Value-3", "Value-4");
+
+			var tuple = _DataTable.TranslateCell("B2");
+
+			Assert.AreEqual((1, 1), tuple);
+		}
+
+		[Test]
+		public void It_should_return_null_when_the_table_does_not_have_any_rows_or_columns()
+		{
+			_DataTable.Columns.Clear();
+			Assert.IsNull(_DataTable.TranslateCell("A2"));
 		}
 	}
 }

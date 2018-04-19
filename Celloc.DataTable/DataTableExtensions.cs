@@ -16,7 +16,7 @@ namespace Celloc.DataTable
 			return table.Rows[cell.Row].ItemArray.Length > cell.Column;
 		}
 
-		public static bool Contains(this System.Data.DataTable table, ((int Column, int Row),(int Column, int Range)) range)
+		public static bool Contains(this System.Data.DataTable table, ((int Column, int Row), (int Column, int Range)) range)
 		{
 			GuardAgainstNullTable(table);
 
@@ -26,7 +26,7 @@ namespace Celloc.DataTable
 		public static object GetValue(this System.Data.DataTable table, (int Column, int Row) cell)
 		{
 			GuardAgainstNullTable(table);
-			
+
 			return table.Contains(cell) ? table.Rows[cell.Row].ItemArray[cell.Column] : null;
 		}
 
@@ -65,13 +65,14 @@ namespace Celloc.DataTable
 
 		public static List<List<object>> GetValuesByRow(this System.Data.DataTable table, string range)
 		{
-			return GetValuesByRow(table, CellRange.Translate(range, Offset.ZeroBased));
+			var rangeTuple = table.TranslateRange(range);
+			return rangeTuple.HasValue ? GetValuesByRow(table, rangeTuple.Value) : null;
 		}
 
 		public static List<List<object>> GetValuesByRow(this System.Data.DataTable table)
 		{
 			GuardAgainstNullTable(table);
-			return GetValuesByRow(table, ((0,0), (table.Columns.Count - 1, table.Rows.Count - 1)));
+			return GetValuesByRow(table, ((0, 0), (table.Columns.Count - 1, table.Rows.Count - 1)));
 		}
 
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table, ((int Column, int Row), (int Column, int Row)) range)
@@ -101,25 +102,67 @@ namespace Celloc.DataTable
 
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table, string range)
 		{
-			GuardAgainstNullRange(range);
-
-			range = ReplaceUnknownWithLastRow(table, range);
-
-			return GetValuesByColumn(table, CellRange.Translate(range, Offset.ZeroBased));
-		}
-
-		private static string ReplaceUnknownWithLastRow(System.Data.DataTable table, string range)
-		{
-			if (Regex.IsMatch(range, @"^[a-zA-Z]{0,3}[0-9]+:[a-zA-Z]{0,3}\?$"))
-				range = range.Replace("?", table.Rows.Count.ToString());
-
-			return range;
+			var rangeTuple = table.TranslateRange(range);
+			return rangeTuple.HasValue ? GetValuesByColumn(table, rangeTuple.Value) : null;
 		}
 
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table)
 		{
 			GuardAgainstNullTable(table);
-			return GetValuesByColumn(table, ((0,0),(table.Columns.Count - 1, table.Rows.Count - 1)));
+			return GetValuesByColumn(table, ((0, 0), (table.Columns.Count - 1, table.Rows.Count - 1)));
+		}
+
+		public static ((int Column, int Row), (int Column, int Row))? TranslateRange(this System.Data.DataTable table, string range)
+		{
+			GuardAgainstNullRange(range);
+
+			range = TranslateUnknown(table, range);
+
+			var tuple = CellRange.Translate(range, Offset.ZeroBased);
+
+			if (!table.Contains(tuple))
+				return null;
+
+			return tuple;
+		}
+
+		private static string TranslateUnknown(System.Data.DataTable table, string range)
+		{
+			if (Regex.IsMatch(range, @"^[a-zA-Z]{0,3}[0-9]+:[a-zA-Z]{0,3}\?$"))
+				return range.Replace("?", table.Rows.Count.ToString());
+
+			if (Regex.IsMatch(range, @"^[a-zA-Z]{0,3}[0-9]+:\?[0-9]+$"))
+			{
+				var cells = range.Split(':');
+
+				var from = CellIndex.Translate(cells[0], Offset.ZeroBased);
+				var to = CellIndex.Translate((table.Columns.Count - 1, from.Row), Offset.ZeroBased);
+
+				return $"{cells[0]}:{to}";
+			}
+
+			if (Regex.IsMatch(range, @"^[a-zA-Z]{0,3}[0-9]+:\?\?$"))
+			{
+				var cells = range.Split(':');
+
+				var to = CellIndex.Translate((table.Columns.Count, table.Rows.Count));
+
+				return $"{cells[0]}:{to}";
+			}
+
+			return range;
+		}
+
+		public static (int Column, int Row)? TranslateCell(this System.Data.DataTable table, string cell)
+		{
+			GuardAgainstNullCell(cell);
+
+			var tuple = CellIndex.Translate(cell, Offset.ZeroBased);
+
+			if (!table.Contains(tuple))
+				return null;
+
+			return tuple;
 		}
 
 		private static void GuardAgainstNullTable(System.Data.DataTable table)
