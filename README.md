@@ -10,3 +10,7 @@ A DataTable extension for Celloc.
 To install the package from NuGet, run the following command:
 
 `Install-Package Celloc.DataTable`
+
+## Usage
+
+Please have a look at the [wiki](https://github.com/sduplooy/Celloc.DataTable/wiki) for more information.
