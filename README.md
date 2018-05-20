@@ -2,7 +2,7 @@
 [![NuGet Badge](https://buildstats.info/nuget/Celloc.DataTable)](https://www.nuget.org/packages/Celloc.DataTable/)
 
 # Celloc.DataTable
-![Logo](https://raw.githubusercontent.com/wiki/sduplooy/Celloc/images/186401-64.png)
+![Logo](https://raw.githubusercontent.com/wiki/sduplooy/Celloc/images/186401-64-plugin.png)
 
 A DataTable extension for Celloc.
 
