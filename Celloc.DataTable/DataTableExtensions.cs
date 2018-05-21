@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text.RegularExpressions;
 
 namespace Celloc.DataTable
@@ -110,6 +111,34 @@ namespace Celloc.DataTable
 		{
 			GuardAgainstNullTable(table);
 			return GetValuesByColumn(table, ((0, 0), (table.Columns.Count - 1, table.Rows.Count - 1)));
+		}
+
+		public static IEnumerable<DataRow> GetRows(this System.Data.DataTable table, string range)
+		{
+			GuardAgainstNullTable(table);
+			GuardAgainstNullRange(range);
+
+			var tuple = TranslateRange(table, range);
+
+			return tuple.HasValue ? table.GetRows(tuple.Value) : null;
+		}
+
+		public static IEnumerable<DataRow> GetRows(this System.Data.DataTable table, ((int Column, int Row), (int Column, int Row)) range)
+		{
+			GuardAgainstNullTable(table);
+
+			if(!table.Contains(range))
+				return null;
+
+			if (!CellRange.IsSameColumn(range))
+				throw new Exception($"The specified range {range} is invalid - expected a single column.");
+
+			var rows = new List<DataRow>();
+
+			for (var i = range.Item1.Row; i <= range.Item2.Row; i++)
+				rows.Add(table.Rows[i]);
+
+			return rows;
 		}
 
 		public static ((int Column, int Row), (int Column, int Row))? TranslateRange(this System.Data.DataTable table, string range)
