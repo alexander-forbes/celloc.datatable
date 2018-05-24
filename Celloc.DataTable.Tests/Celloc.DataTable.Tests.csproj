@@ -52,8 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTableExtensionsTests.cs" />
+    <Compile Include="ContainsExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShiftExtensionsTests.cs" />
+    <Compile Include="TranslationExtensionsTests.cs" />
+    <Compile Include="ValueExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

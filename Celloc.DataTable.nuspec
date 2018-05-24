@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>Celloc.DataTable</id>
-		<version>1.4.0</version>
+		<version>1.5.0</version>
 		<title>Celloc.DataTable</title>
 		<authors>Sydney du Plooy</authors>
 		<licenseUrl>https://github.com/sduplooy/Celloc.DataTable/blob/master/LICENSE</licenseUrl>

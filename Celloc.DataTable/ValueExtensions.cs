@@ -1,47 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text.RegularExpressions;
 
 namespace Celloc.DataTable
 {
-	public static class DataTableExtensions
+	public static class ValueExtensions
 	{
-		public static bool Contains(this System.Data.DataTable table, (int Column, int Row) cell)
-		{
-			GuardAgainstNullTable(table);
-
-			if (table.Rows.Count - 1 < cell.Row)
-				return false;
-
-			return table.Rows[cell.Row].ItemArray.Length > cell.Column;
-		}
-
-		public static bool Contains(this System.Data.DataTable table, ((int Column, int Row), (int Column, int Range)) range)
-		{
-			GuardAgainstNullTable(table);
-
-			return table.Contains(range.Item1) && table.Contains(range.Item2);
-		}
-
 		public static object GetValue(this System.Data.DataTable table, (int Column, int Row) cell)
 		{
-			GuardAgainstNullTable(table);
+			ArgumentGuards.GuardAgainstNullTable(table);
 
 			return table.Contains(cell) ? table.Rows[cell.Row].ItemArray[cell.Column] : null;
 		}
 
 		public static object GetValue(this System.Data.DataTable table, string cell)
 		{
-			GuardAgainstNullTable(table);
-			GuardAgainstNullCell(cell);
+			ArgumentGuards.GuardAgainstNullTable(table);
+			ArgumentGuards.GuardAgainstNullCell(cell);
 
 			return GetValue(table, CellIndex.Translate(cell, Offset.ZeroBased));
 		}
 
 		public static List<List<object>> GetValuesByRow(this System.Data.DataTable table, ((int Column, int Row), (int Column, int Row)) range)
 		{
-			GuardAgainstNullTable(table);
+			ArgumentGuards.GuardAgainstNullTable(table);
 
 			if (!table.Contains(range))
 				return null;
@@ -72,13 +54,13 @@ namespace Celloc.DataTable
 
 		public static List<List<object>> GetValuesByRow(this System.Data.DataTable table)
 		{
-			GuardAgainstNullTable(table);
+			ArgumentGuards.GuardAgainstNullTable(table);
 			return GetValuesByRow(table, ((0, 0), (table.Columns.Count - 1, table.Rows.Count - 1)));
 		}
 
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table, ((int Column, int Row), (int Column, int Row)) range)
 		{
-			GuardAgainstNullTable(table);
+			ArgumentGuards.GuardAgainstNullTable(table);
 
 			if (!table.Contains(range))
 				return null;
@@ -109,23 +91,23 @@ namespace Celloc.DataTable
 
 		public static List<List<object>> GetValuesByColumn(this System.Data.DataTable table)
 		{
-			GuardAgainstNullTable(table);
+			ArgumentGuards.GuardAgainstNullTable(table);
 			return GetValuesByColumn(table, ((0, 0), (table.Columns.Count - 1, table.Rows.Count - 1)));
 		}
 
 		public static IEnumerable<DataRow> GetRows(this System.Data.DataTable table, string range)
 		{
-			GuardAgainstNullTable(table);
-			GuardAgainstNullRange(range);
+			ArgumentGuards.GuardAgainstNullTable(table);
+			ArgumentGuards.GuardAgainstNullRange(range);
 
-			var tuple = TranslateRange(table, range);
+			var tuple = table.TranslateRange(range);
 
 			return tuple.HasValue ? table.GetRows(tuple.Value) : null;
 		}
 
 		public static IEnumerable<DataRow> GetRows(this System.Data.DataTable table, ((int Column, int Row), (int Column, int Row)) range)
 		{
-			GuardAgainstNullTable(table);
+			ArgumentGuards.GuardAgainstNullTable(table);
 
 			if(!table.Contains(range))
 				return null;
@@ -139,77 +121,6 @@ namespace Celloc.DataTable
 				rows.Add(table.Rows[i]);
 
 			return rows;
-		}
-
-		public static ((int Column, int Row), (int Column, int Row))? TranslateRange(this System.Data.DataTable table, string range)
-		{
-			GuardAgainstNullRange(range);
-
-			range = TranslateUnknown(table, range);
-
-			var tuple = CellRange.Translate(range, Offset.ZeroBased);
-
-			if (!table.Contains(tuple))
-				return null;
-
-			return tuple;
-		}
-
-		private static string TranslateUnknown(System.Data.DataTable table, string range)
-		{
-			if (Regex.IsMatch(range, @"^[a-zA-Z]{0,3}[0-9]+:[a-zA-Z]{0,3}\?$"))
-				return range.Replace("?", table.Rows.Count.ToString());
-
-			if (Regex.IsMatch(range, @"^[a-zA-Z]{0,3}[0-9]+:\?[0-9]+$"))
-			{
-				var cells = range.Split(':');
-
-				var from = CellIndex.Translate(cells[0], Offset.ZeroBased);
-				var to = CellIndex.Translate((table.Columns.Count - 1, from.Row), Offset.ZeroBased);
-
-				return $"{cells[0]}:{to}";
-			}
-
-			if (Regex.IsMatch(range, @"^[a-zA-Z]{0,3}[0-9]+:\?\?$"))
-			{
-				var cells = range.Split(':');
-
-				var to = CellIndex.Translate((table.Columns.Count, table.Rows.Count));
-
-				return $"{cells[0]}:{to}";
-			}
-
-			return range;
-		}
-
-		public static (int Column, int Row)? TranslateCell(this System.Data.DataTable table, string cell)
-		{
-			GuardAgainstNullCell(cell);
-
-			var tuple = CellIndex.Translate(cell, Offset.ZeroBased);
-
-			if (!table.Contains(tuple))
-				return null;
-
-			return tuple;
-		}
-
-		private static void GuardAgainstNullTable(System.Data.DataTable table)
-		{
-			if (table == null)
-				throw new ArgumentNullException(nameof(table));
-		}
-
-		private static void GuardAgainstNullCell(string cell)
-		{
-			if (string.IsNullOrEmpty(cell))
-				throw new ArgumentNullException(nameof(cell));
-		}
-
-		private static void GuardAgainstNullRange(string range)
-		{
-			if (string.IsNullOrEmpty(range))
-				throw new ArgumentNullException(nameof(range));
 		}
 	}
 }

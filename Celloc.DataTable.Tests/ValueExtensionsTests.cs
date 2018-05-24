@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Celloc.DataTable.Tests
 {
 	[TestFixture]
-	public class When_calling_contains_on_datatable_extensions_with_a_cell
+	public class When_calling_get_value_on_value_extensions_with_a_cell_index
 	{
 		private (int, int) _Cell;
 		private System.Data.DataTable _DataTable;
@@ -21,94 +21,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.Contains(null, _Cell));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
-		}
-
-		[Test]
-		public void It_should_return_false_when_the_data_table_has_fewer_rows_than_the_specified_cell()
-		{
-			Assert.IsFalse(_DataTable.Contains(_Cell));
-		}
-
-		[Test]
-		public void It_should_return_false_when_the_row_has_fewer_columns_than_the_specified_cell()
-		{
-			_DataTable.Rows.Add();
-			Assert.IsFalse(_DataTable.Contains(_Cell));
-		}
-
-		[Test]
-		public void It_should_return_true_when_the_data_table_has_the_row_and_column_specified_in_the_cell()
-		{
-			_DataTable.Rows.Add();
-			_DataTable.Columns.Add();
-			Assert.IsTrue(_DataTable.Contains(_Cell));
-		}
-	}
-
-	[TestFixture]
-	public class When_calling_contains_on_datatable_extensions_with_a_range
-	{
-		private ((int, int), (int, int)) _Range;
-		private System.Data.DataTable _DataTable;
-
-		[SetUp]
-		public void Setup()
-		{
-			_Range = ((0, 0), (1, 1));
-			_DataTable = new System.Data.DataTable();
-		}
-
-		[Test]
-		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
-		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.Contains(null, _Range));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
-		}
-
-		[Test]
-		public void It_should_return_false_when_the_data_table_does_not_contain_the_from_range()
-		{
-			Assert.IsFalse(_DataTable.Contains(_Range));
-		}
-
-		[Test]
-		public void It_should_return_false_when_the_data_table_doesn_not_contain_the_to_range()
-		{
-			_DataTable.Columns.Add();
-			_DataTable.Rows.Add();
-			Assert.IsFalse(_DataTable.Contains(_Range));
-		}
-
-		[Test]
-		public void It_should_return_true_when_the_data_table_has_the_from_and_to_range_specified()
-		{
-			_DataTable.Columns.Add();
-			_DataTable.Columns.Add();
-			_DataTable.Rows.Add();
-			_DataTable.Rows.Add();
-			Assert.IsTrue(_DataTable.Contains(_Range));
-		}
-	}
-
-	[TestFixture]
-	public class When_calling_get_value_on_datatable_extensions_with_a_cell_index
-	{
-		private (int, int) _Cell;
-		private System.Data.DataTable _DataTable;
-
-		[SetUp]
-		public void Setup()
-		{
-			_Cell = (0, 0);
-			_DataTable = new System.Data.DataTable();
-		}
-
-		[Test]
-		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
-		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValue(null, (0, 0)));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetValue(null, (0, 0)));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -129,7 +42,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_get_value_on_datatable_extensions_with_a_cell_name
+	public class When_calling_get_value_on_value_extensions_with_a_cell_name
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -142,7 +55,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValue(null, "A1"));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetValue(null, "A1"));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -177,7 +90,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_get_values_by_row_on_datatable_extensions_with_a_cell_range_name
+	public class When_calling_get_values_by_row_on_value_extensions_with_a_cell_range_name
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -194,7 +107,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByRow(null, "A1:B1"));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetValuesByRow(null, "A1:B1"));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -263,7 +176,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_get_values_by_row_on_datatable_extensions_with_a_cell_range_index
+	public class When_calling_get_values_by_row_on_value_extensions_with_a_cell_range_index
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -278,7 +191,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByRow(null, ((0, 0), (1, 1))));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetValuesByRow(null, ((0, 0), (1, 1))));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -319,7 +232,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_get_values_by_row_on_datatable_extensions
+	public class When_calling_get_values_by_row_on_value_extensions
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -336,7 +249,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByRow(null));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetValuesByRow(null));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -361,7 +274,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_get_values_by_column_on_datatable_extensions_with_a_cell_range_index
+	public class When_calling_get_values_by_column_on_value_extensions_with_a_cell_range_index
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -376,7 +289,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByColumn(null, ((0, 0), (1, 1))));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetValuesByColumn(null, ((0, 0), (1, 1))));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -417,7 +330,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_get_values_by_column_on_datatable_extensions_with_a_cell_range_name
+	public class When_calling_get_values_by_column_on_value_extensions_with_a_cell_range_name
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -432,7 +345,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByColumn(null, "A1:B2"));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetValuesByColumn(null, "A1:B2"));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -497,7 +410,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_get_values_by_column_on_datatable_extensions
+	public class When_calling_get_values_by_column_on_value_extensions
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -514,7 +427,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetValuesByColumn(null));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetValuesByColumn(null));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -541,101 +454,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_translate_range_on_datatable_extensions
-	{
-		private System.Data.DataTable _DataTable;
-
-		[SetUp]
-		public void Setup()
-		{
-			_DataTable = new System.Data.DataTable();
-			_DataTable.Columns.Add("Column-1");
-			_DataTable.Columns.Add("Column-2");
-		}
-
-		[Test]
-		public void It_should_throw_an_exception_for_a_null_range()
-		{
-			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateRange(null));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message, exception.Message);
-		}
-
-		[Test]
-		public void It_should_throw_an_exception_for_an_empty_range()
-		{
-			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateRange(string.Empty));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message, exception.Message);
-		}
-
-		[Test]
-		public void It_should_replace_the_unknown_row_with_the_last_row_index()
-		{
-			_DataTable.Rows.Add("Value-1", "Value-2");
-			_DataTable.Rows.Add("Value-3", "Value-4");
-			_DataTable.Rows.Add("Value-5", "Value-6");
-			_DataTable.Rows.Add("Value-7", "Value-8");
-
-			var tuple = _DataTable.TranslateRange("B2:B?");
-
-			Assert.AreEqual(((1, 1), (1, 3)), tuple);
-		}
-
-		[Test]
-		public void It_should_return_null_when_the_table_does_not_have_any_rows_or_columns()
-		{
-			_DataTable.Columns.Clear();
-			Assert.IsNull(_DataTable.TranslateRange("A2:A?"));
-		}
-	}
-
-	[TestFixture]
-	public class When_calling_translate_cell_on_datatable_extensions
-	{
-		private System.Data.DataTable _DataTable;
-
-		[SetUp]
-		public void Setup()
-		{
-			_DataTable = new System.Data.DataTable();
-			_DataTable.Columns.Add("Column-1");
-			_DataTable.Columns.Add("Column-2");
-		}
-
-		[Test]
-		public void It_should_throw_an_exception_for_a_null_cell()
-		{
-			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateCell(null));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: cell", exception.Message, exception.Message);
-		}
-
-		[Test]
-		public void It_should_throw_an_exception_for_an_empty_cell()
-		{
-			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateCell(string.Empty));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: cell", exception.Message, exception.Message);
-		}
-
-		[Test]
-		public void It_should_replace_the_unknown_row_with_the_last_row_index()
-		{
-			_DataTable.Rows.Add("Value-1", "Value-2");
-			_DataTable.Rows.Add("Value-3", "Value-4");
-
-			var tuple = _DataTable.TranslateCell("B2");
-
-			Assert.AreEqual((1, 1), tuple);
-		}
-
-		[Test]
-		public void It_should_return_null_when_the_table_does_not_have_any_rows_or_columns()
-		{
-			_DataTable.Columns.Clear();
-			Assert.IsNull(_DataTable.TranslateCell("A2"));
-		}
-	}
-
-	[TestFixture]
-	public class When_calling_get_rows_on_datatable_extensions_with_a_range
+	public class When_calling_get_rows_on_value_extensions_with_a_range
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -650,7 +469,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetRows(null, "A1:A1"));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetRows(null, "A1:A1"));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 
@@ -689,7 +508,7 @@ namespace Celloc.DataTable.Tests
 	}
 
 	[TestFixture]
-	public class When_calling_get_rows_on_datatable_extensions_with_a_tuple
+	public class When_calling_get_rows_on_value_extensions_with_a_tuple
 	{
 		private System.Data.DataTable _DataTable;
 
@@ -704,7 +523,7 @@ namespace Celloc.DataTable.Tests
 		[Test]
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
-			var exception = Assert.Throws<ArgumentNullException>(() => DataTableExtensions.GetRows(null, ((0, 0), (0, 0))));
+			var exception = Assert.Throws<ArgumentNullException>(() => ValueExtensions.GetRows(null, ((0, 0), (0, 0))));
 			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
 		}
 

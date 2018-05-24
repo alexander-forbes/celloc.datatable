@@ -46,7 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTableExtensions.cs" />
+    <Compile Include="ArgumentGuards.cs" />
+    <Compile Include="ContainsExtensions.cs" />
+    <Compile Include="ShiftExtensions.cs" />
+    <Compile Include="TranslationExtensions.cs" />
+    <Compile Include="ValueExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
