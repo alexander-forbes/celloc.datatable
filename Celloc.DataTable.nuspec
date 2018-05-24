@@ -10,7 +10,7 @@
 		<iconUrl>https://raw.githubusercontent.com/wiki/sduplooy/Celloc/images/186401-64-plugin.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>A DataTable extension for Celloc.</description>
-		<releaseNotes>Adds a GetRows() method that will get all the rows for a given range.</releaseNotes>
+		<releaseNotes>Adds a Shift() method that will shift a single column range to another column.</releaseNotes>
 		<copyright>Copyright (c) 2018 Sydney du Plooy</copyright>
 		<tags>Celloc Excel DataTable</tags>
 		<dependencies>
