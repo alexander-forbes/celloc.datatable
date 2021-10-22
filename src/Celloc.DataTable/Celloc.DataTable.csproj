@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<OutputType>Library</OutputType>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<Authors>Alexander Forbes Group Services (Pty) Ltd.</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/alexander-forbes/celloc.datatable</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/alexander-forbes/celloc.datatable.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Description>A DataTable extension for Celloc.</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+		<PackageReference Include="Celloc" Version="3.0.0" />
+	</ItemGroup>
+</Project>
