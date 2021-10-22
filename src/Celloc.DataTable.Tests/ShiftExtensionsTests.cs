@@ -20,35 +20,35 @@ namespace Celloc.DataTable.Tests
 		public void It_should_throw_an_exception_when_the_table_parameter_is_null()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => ShiftExtensions.Shift(null, "A1:A1", "B"));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: table", exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'table')", exception.Message);
 		}
 
 		[Test]
 		public void It_should_throw_an_exception_for_a_null_range()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.Shift(null, "B"));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message, exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'range')", exception.Message, exception.Message);
 		}
 
 		[Test]
 		public void It_should_throw_an_exception_for_an_empty_range()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.Shift("", "B"));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message, exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'range')", exception.Message, exception.Message);
 		}
 
 		[Test]
 		public void It_should_throw_an_exception_for_a_null_to_column()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.Shift("A1:A1", null));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: toColumn", exception.Message, exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'toColumn')", exception.Message, exception.Message);
 		}
 
 		[Test]
 		public void It_should_throw_an_exception_for_an_empty_to_column()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.Shift("A1:A1", ""));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: toColumn", exception.Message, exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'toColumn')", exception.Message, exception.Message);
 		}
 
 		[Test]
@@ -57,14 +57,14 @@ namespace Celloc.DataTable.Tests
 			_DataTable.Rows.Add("Value-1", "Value-2");
 
 			var exception = Assert.Throws<ArgumentException>(() => _DataTable.Shift("A1:B1", "A"));
-			Assert.AreEqual($"A shift cannot be performed across multiple columns.{Environment.NewLine}Parameter name: range", exception.Message);
+			Assert.AreEqual($"A shift cannot be performed across multiple columns. (Parameter 'range')", exception.Message);
 		}
 
 		[Test]
 		public void It_should_throw_an_exception_when_the_data_table_does_not_contain_the_range()
 		{
 			var exception = Assert.Throws<ArgumentOutOfRangeException>(() => _DataTable.Shift("A20:A40", "A"));
-			Assert.AreEqual($"The data table does not contain the range A20:A40.{Environment.NewLine}Parameter name: range", exception.Message);
+			Assert.AreEqual($"The data table does not contain the range A20:A40. (Parameter 'range')", exception.Message);
 		}
 
 		[Test]

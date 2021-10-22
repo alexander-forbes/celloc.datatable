@@ -20,14 +20,14 @@ namespace Celloc.DataTable.Tests
 		public void It_should_throw_an_exception_for_a_null_range()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateRange(null));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message, exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'range')", exception.Message, exception.Message);
 		}
 
 		[Test]
 		public void It_should_throw_an_exception_for_an_empty_range()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateRange(string.Empty));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: range", exception.Message, exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'range')", exception.Message, exception.Message);
 		}
 
 		[Test]
@@ -68,14 +68,14 @@ namespace Celloc.DataTable.Tests
 		public void It_should_throw_an_exception_for_a_null_cell()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateCell(null));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: cell", exception.Message, exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'cell')", exception.Message, exception.Message);
 		}
 
 		[Test]
 		public void It_should_throw_an_exception_for_an_empty_cell()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => _DataTable.TranslateCell(string.Empty));
-			Assert.AreEqual($"Value cannot be null.{Environment.NewLine}Parameter name: cell", exception.Message, exception.Message);
+			Assert.AreEqual($"Value cannot be null. (Parameter 'cell')", exception.Message, exception.Message);
 		}
 
 		[Test]
